@@ -1,2 +1,0 @@
-# Equipo-Zeta-
-DAW1 25/26 PROYECTO OBS 
