@@ -14,16 +14,18 @@
     <header>
         <h1>RoboClean Tycoon</h1>
     </header>
-<nav>
-			<a href=#>Vista1</a>
-			<a href=#>Vista2</a>
-			<a href=#>Vista3</a>
+        <nav>
+			<a href=#>Menu principal</a>
+			<a href=#>Crear Robot</a>
+			<a href=#>Ver tus robots</a>
 		</nav>
-		<div class='vista activa'>
+		<div class='vista activa'  id="Principal">
 			<p>Bienvenido a A.R.E.N.A.(Administración de Robots para Entornos Naturales y Acuáticos)</p>
-			<button id=boton1>Ir al siguiente</button>
+            <p> Aqui vamos a poder crear robots para ayudar con tu tarea de limpiar la playa asi como poder modificar y vender tus robots</p>
+			<button id=salida>Salir de A.R.E.N.A</button>
 		</div>
-		<div class=vista>
+		<div class=vista id="Creacion">
+             <h2>Creacion del Robot</h2>
 			<form id="formulario" action="" method="get">
 
                 <input type="hidden" id="version" name="game_version" value="1.4.2">
@@ -85,14 +87,13 @@
 
             </form>
 		</div>
-		<div class=vista>
+		<div class=vista id="Lista">
 			<p>Este es el tercer div</p>
-			<button id=boton3>Ir al primero</button>
 		</div>
-        <h2>Creacion del Robot</h2>
 
             
-<script  src="js/script.js"></script>
+<script  src="js/create.js"></script>
+<script  src="js/vistas/menu.js"></script>
     <footer>
         <details>
             <summary>Más información</summary>
