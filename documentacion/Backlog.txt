@@ -3,7 +3,7 @@
 	--Crear el menu. Alberto 2fcbdc0
 	--Create. Sergio
 	--Leer. JuanRa
-	--Listar. 
+	--Listar. JuanRa
 	--Delete.
 	--Update.
 --Crear el videojuego:
