@@ -1,9 +1,9 @@
 --Creación del HTML Sergio
 --Creación del CRUD: 
-	--Crear el menu Alberto
-	--Create Sergio
-	--Leer JuanRa
-	--Listar 
-	--Delete
-	--Update
+	--Crear el menu. Alberto
+	--Create. Sergio
+	--Leer. JuanRa
+	--Listar. 
+	--Delete.
+	--Update.
 --Crear el videojuego:
