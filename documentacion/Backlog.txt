@@ -1,6 +1,6 @@
 --Creación del HTML Sergio
 --Creación del CRUD: 
-	--Crear el menu. Alberto
+	--Crear el menu. Alberto 2fcbdc0
 	--Create. Sergio
 	--Leer. JuanRa
 	--Listar. 
