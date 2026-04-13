@@ -3,84 +3,97 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="author" content="sergio gonzalez garcia" />
+    <meta name="author" content="sergio gonzalez garcia, Alberto Rodriguez Piris, Juan Ramon Martinez Sanchez" />
     <title>RoboClean Tycoon</title>
     <script defer src="js/create.js"></script>
+    <link rel=stylesheet href=css/reset.css />
+	<link rel=stylesheet href=css/estilos.css />
 </head>
 <body>
 
     <header>
         <h1>RoboClean Tycoon</h1>
     </header>
+        <nav>
+			<a href=#>Menu principal</a>
+			<a href=#>Crear Robot</a>
+			<a href=#>Ver tus robots</a>
+		</nav>
+		<div class='vista activa'  id="Principal">
+			<p>Bienvenido a A.R.E.N.A.(Administración de Robots para Entornos Naturales y Acuáticos)</p>
+            <p> Aqui vamos a poder crear robots para ayudar con tu tarea de limpiar la playa asi como poder modificar y vender tus robots</p>
+			<button id=salida>Salir de A.R.E.N.A</button>
+		</div>
+		<div class=vista id="Creacion">
+             <h2>Creacion del Robot</h2>
+			<form id="formulario" action="" method="get">
 
-    <main>
-        <h2>Configuración del equipo</h2>
+                <input type="hidden" id="version" name="game_version" value="1.4.2">
 
-        <form id="formulario" action="" method="get">
+                <p>
+                    <label for="usuario">Usuario:</label>
+                    <input type="text" id="usuario" name="usuario" required>
+                </p>
 
-            <input type="hidden" id="version" name="game_version" value="1.4.2">
+                <p>
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                </p>
 
-            <p>
-                <label for="usuario">Usuario:</label>
-                <input type="text" id="usuario" name="usuario" required>
-            </p>
+                <p>
+                    <label for="nacimiento">Fecha de nacimiento:</label>
+                    <input type="date" id="nacimiento" name="nacimiento">
+                </p>
 
-            <p>
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
-            </p>
+                <p>
+                    <label for="robot">Robot:</label>
+                    <select id="robot" name="robot">
+                        <option value="">-- Selecciona --</option>
+                        <option value="r1">WALL-E Mk1</option>
+                        <option value="r2">TRASH-X 3000</option>
+                 </select>
+             </p>
 
-            <p>
-                <label for="nacimiento">Fecha de nacimiento:</label>
-                <input type="date" id="nacimiento" name="nacimiento">
-            </p>
+                <p>Modo de operación:</p>
+                <p>
+                    <label><input type="radio" name="modo" value="auto"> Automático</label>
+                    <label><input type="radio" name="modo" value="manual" checked> Manual</label>
+                    <label><input type="radio" name="modo" value="hibrido"> Híbrido</label>
+                </p>
 
-            <p>
-                <label for="robot">Robot:</label>
-                <select id="robot" name="robot">
-                    <option value="">-- Selecciona --</option>
-                    <option value="r1">WALL-E Mk1</option>
-                    <option value="r2">TRASH-X 3000</option>
-                </select>
-            </p>
+                <p>Mejoras:</p>
+                <p>
+                    <label><input type="checkbox" name="mejoras" value="turbo"> Turbo</label>
+                    <label><input type="checkbox" name="mejoras" value="capacidad" checked> Contenedor extra</label>
+                    <label><input type="checkbox" name="mejoras" value="ia"> Módulo IA</label>
+                    <label><input type="checkbox" name="mejoras" value="solar"> Panel solar</label>
+                </p>
 
-            <p>Modo de operación:</p>
-            <p>
-                <label><input type="radio" name="modo" value="auto"> Automático</label>
-                <label><input type="radio" name="modo" value="manual" checked> Manual</label>
-                <label><input type="radio" name="modo" value="hibrido"> Híbrido</label>
-            </p>
+                <p>
+                    <label for="mision">Descripción de la misión:</label><br>
+                    <textarea id="mision" name="mision"></textarea>
+                </p>
 
-            <p>Mejoras:</p>
-            <p>
-                <label><input type="checkbox" name="mejoras" value="turbo"> Turbo</label>
-                <label><input type="checkbox" name="mejoras" value="capacidad" checked> Contenedor extra</label>
-                <label><input type="checkbox" name="mejoras" value="ia"> Módulo IA</label>
-                <label><input type="checkbox" name="mejoras" value="solar"> Panel solar</label>
-            </p>
+                <p>
+                    <label for="imagen">Imagen del robot:</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*">
+                </p>
 
-            <p>
-                <label for="mision">Descripción de la misión:</label><br>
-                <textarea id="mision" name="mision"></textarea>
-            </p>
+                <p>
+                    <button type="submit" id="botonInsertar">Insertar</button>
+                    <button type="reset">Reiniciar</button>
+                    <a href="https://www.example.com">Ver manual</a>
+                </p>
 
-            <p>
-                <label for="imagen">Imagen del robot:</label>
-                <input type="file" id="imagen" name="imagen" accept="image/*">
-            </p>
+            </form>
+		</div>
+		<div class=vista id="Lista">
+			<p>Este es el tercer div</p>
+		</div>
 
-            <p>
-                <button type="submit" id="botonInsertar">Insertar</button>
-                <button type="reset">Reiniciar</button>
-                <a href="https://www.example.com">Ver manual</a>
-            </p>
-
-        </form>
-        <section id="zona-resultados" style="margin-top: 30px;">
-            <h2>Lista de Usuarios</h2>
-            <ul id="listaUsuarios"></ul>
-        </section>
-    </main>
+            
+<script  src="js/create.js"></script>
+<script  src="js/vistas/menu.js"></script>
     <footer>
         <details>
             <summary>Más información</summary>
