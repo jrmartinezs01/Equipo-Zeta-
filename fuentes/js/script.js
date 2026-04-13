@@ -31,9 +31,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const nuevo = crearUsuario(usuario, contraseña);
-    console.log("Usuario creado:", nuevo);
-    console.log("Lista de usuarios:", usuarios);
+    
+    // Llamamos a la función para actualizar la vista
+    leerUsuario();
 
     alert(`Usuario "${usuario}" creado con ID ${nuevo.id}`);
   });
 });
+
+// --- 2. Funcion Read (Leer) ---
+
+function leerUsuario() {
+
+  const lista = document.getElementById("listaUsuarios");
+  lista.innerHTML = "";
+
+  usuarios.forEach(usuario => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <span>${usuario.usuario}</span>
+      <button class="btn-delete" onclick="borrarUsuario(${usuario.id})">Eliminar</button>
+    `;
+    lista.appendChild(li);
+  });
+
+}
+
+// --- 3. Funcion Delete (Borrar) ---
+function borrarUsuario(id) {
+  const indice = usuarios.findIndex(u => u.id === id);
+  if (indice !== -1) {
+    usuarios.splice(indice, 1);
+    leerUsuario(); // Volvemos a pintar
+  }
+}
