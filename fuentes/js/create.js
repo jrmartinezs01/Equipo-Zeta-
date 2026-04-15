@@ -61,18 +61,6 @@ function listarUsuarios() {
   });
 }
 
-// Como pruebo que funciona la funcion listarUsuarios()? en firefox
-// Para probar que la función listarUsuarios() funciona en Firefox, sigue estos pasos:
-// 1. Asegúrate de que tu archivo HTML tiene un elemento con el id "listaUsuarios" donde se mostrará la lista de usuarios.
-// 2. Abre tu archivo HTML en Firefox.
-// 3. Abre las herramientas de desarrollo de Firefox (puedes hacerlo presionando F12 o haciendo clic derecho y seleccionando "Inspeccionar").
-// 4. En la consola de las herramientas de desarrollo, escribe listarUsuarios() y presiona Enter.
-// 5. Si la función está correctamente definida y el array de usuarios tiene datos, deberías ver la lista de usuarios aparecer en el elemento con id "listaUsuarios" en tu página web. Si no ves nada, asegúrate de que has creado algunos usuarios antes de llamar a la función listarUsuarios().
-
-// Me sale undefined, que hago?
-// Si al llamar a listarUsuarios() en la consola te sale undefined, eso es normal porque la función no devuelve ningún valor (es decir, no tiene un return). Lo importante es que la función esté ejecutando su lógica correctamente. Para verificar que está funcionando, revisa el elemento con id "listaUsuarios" en tu página web para ver si se han agregado los usuarios a la lista. Si no ves ningún cambio, asegúrate de que has creado algunos usuarios antes de llamar a listarUsuarios() y que el array de usuarios no está vacío. También puedes agregar console.log(usuarios) dentro de la función listarUsuarios() para verificar que el array de usuarios contiene datos.
-
-
 
 function leerUsuario() {
 
@@ -88,17 +76,4 @@ function leerUsuario() {
     lista.appendChild(li);
   });
 
-}
-
-// --- 3. Funcion Delete (Borrar) ---   Aqui no me sale el boton de eliminar, que hago?
-// Si el botón de eliminar no aparece, asegúrate de que la función leerUsuario() se está llamando correctamente después de crear un usuario. Además, verifica que el elemento con id "listaUsuarios" existe en tu HTML y que no hay errores en la consola del navegador. Si todo parece estar en orden, intenta agregar un console.log dentro de la función leerUsuario() para verificar que se está ejecutando y que el array de usuarios contiene datos. También puedes revisar el código HTML generado para asegurarte de que el botón se está creando correctamente.
-function borrarUsuario(id) {
-  const indice = usuarios.findIndex(u => u.id === id);
-  if (indice !== -1) {
-    usuarios.splice(indice, 1);
-    leerUsuario(); // Volvemos a pintar
-
-    console.log(`Usuario con ID ${id} eliminado.`);
-
-  }
 }
