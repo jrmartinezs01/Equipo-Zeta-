@@ -34,7 +34,7 @@ class CreateController {
             imagen: document.getElementById("imagen").files[0]?.name || ""
         };
 
-        const nuevo = gestionUsuarios.crear(datos);
+        const nuevo = gestionarUsuarios.crear(datos);
         
         // Llamamos al listado (ahora a través de window o instancia global)
         if (window.listarController) {

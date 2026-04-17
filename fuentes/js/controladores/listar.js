@@ -16,7 +16,7 @@ class ListarController {
         const lista = document.getElementById("listaUsuarios");
         if (!lista) return;
 
-        const usuarios = gestionUsuarios.listar();
+        const usuarios = gestionarUsuarios.listar();
         lista.innerHTML = "";
 
         usuarios.forEach(usuario => {
@@ -34,7 +34,7 @@ class ListarController {
     }
 
     handleRead(id) {
-        const usuario = gestionUsuarios.leer(Number(id));
+        const usuario = gestionarUsuarios.leer(Number(id));
         if (usuario) {
             alert(`
                 DETALLE DEL USUARIO:

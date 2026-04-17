@@ -55,4 +55,4 @@ class GestionUsuarios {
 }
 
 // Instancia global para que los controladores la usen
-const gestionUsuarios = new GestionUsuarios();
+const gestionarUsuarios = new GestionUsuarios();

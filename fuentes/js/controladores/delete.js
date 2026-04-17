@@ -11,7 +11,7 @@ class DeleteController {
     handleDelete(id) {
         const idNum = Number(id);
         if (confirm("¿Seguro que quieres eliminar a este usuario?")) {
-            if (gestionUsuarios.borrar(idNum)) {
+            if (gestionarUsuarios.borrar(idNum)) {
                 // Si el borrado es correcto, refrescamos la lista
                 if (window.listarController) {
                     window.listarController.render();
