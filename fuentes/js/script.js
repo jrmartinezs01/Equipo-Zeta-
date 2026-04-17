@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const nuevo = crearUsuario(usuario, contraseña);
-    
+
     // Llamamos a la función para actualizar la vista
     leerUsuario();
 
@@ -58,10 +58,15 @@ function leerUsuario() {
 }
 
 // --- 3. Funcion Delete (Borrar) ---
+
 function borrarUsuario(id) {
   const indice = usuarios.findIndex(u => u.id === id);
   if (indice !== -1) {
-    usuarios.splice(indice, 1);
-    leerUsuario(); // Volvemos a pintar
+    const confirmacion = confirm(`¿Estás seguro de que quieres eliminar al usuario "${usuarios[indice].usuario}"?`);
+    if (confirmacion) {
+      usuarios.splice(indice, 1);
+      // Actualizamos la vista
+      leerUsuario();
+    }
   }
 }
