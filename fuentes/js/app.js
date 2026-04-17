@@ -1,3 +1,19 @@
+// Definición de la entidad Usuario
+class Usuario {
+    constructor(id, nombre, password, nacimiento, robot, modo, mejoras, mision, imagen) {
+        this.id = id;
+        this.usuario = nombre;
+        this.contraseña = password;
+        this.nacimiento = nacimiento;
+        this.robot = robot;
+        this.modo = modo;
+        this.mejoras = mejoras;
+        this.mision = mision;
+        this.imagen = imagen;
+    }
+}
+
+// Clase que gestiona el motor de datos del CRUD
 class GestionUsuarios {
     constructor() {
         this.usuarios = [];
@@ -33,11 +49,10 @@ class GestionUsuarios {
         return this.usuarios;
     }
 
-    // Nueva funcionalidad: Leer (obtener un detalle)
     leer(id) {
         return this.usuarios.find(u => u.id === id) || null;
     }
 }
 
-// Creamos la instancia global para que todos la vean
+// Instancia global para que los controladores la usen
 const gestionUsuarios = new GestionUsuarios();
