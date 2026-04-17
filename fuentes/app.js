@@ -52,6 +52,21 @@ class GestionUsuarios {
     leer(id) {
         return this.usuarios.find(u => u.id === id) || null;
     }
+    actualizar(id, datos) {
+    const usuario = this.leer(id);
+    if (usuario) {
+        usuario.usuario = datos.usuario;
+        usuario.contraseña = datos.password;
+        usuario.nacimiento = datos.nacimiento;
+        usuario.robot = datos.robot;
+        usuario.modo = datos.modo;
+        usuario.mejoras = datos.mejoras;
+        usuario.mision = datos.mision;
+        usuario.imagen = datos.imagen;
+        return true;
+    }
+    return false;
+}
 }
 
 // Instancia global para que los controladores la usen
