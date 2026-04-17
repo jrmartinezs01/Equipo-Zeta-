@@ -3,7 +3,7 @@
 	--Crear el menu. Alberto 2fcbdc0
 	--Create. Sergio 8107cf7
 	--Leer. JuanRa
-	--Listar. JuanRa
-	--Delete.
+	--Listar. JuanRa 786a35e
+	--Delete. Sergio/Modular c64df84, 85dabab
 	--Update.
---Crear el videojuego:
+--Crear el videojuego: 
