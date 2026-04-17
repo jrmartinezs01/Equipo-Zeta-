@@ -5,7 +5,6 @@ class ListarController {
 
     init() {
         window.listarController = this;
-        window.borrarUsuario = (id) => this.handleDelete(id);
         window.verDetalle = (id) => this.handleRead(id);
         
         document.addEventListener("DOMContentLoaded", () => {
@@ -32,14 +31,6 @@ class ListarController {
             `;
             lista.appendChild(li);
         });
-    }
-
-    handleDelete(id) {
-        if (confirm("¿Seguro que quieres eliminar a este usuario?")) {
-            if (gestionUsuarios.borrar(id)) {
-                this.render();
-            }
-        }
     }
 
     handleRead(id) {
