@@ -5,5 +5,5 @@
 	--Leer. JuanRa
 	--Listar. JuanRa
 	--Delete.
-	--Update.
+	--Update. Alberto
 --Crear el videojuego:
