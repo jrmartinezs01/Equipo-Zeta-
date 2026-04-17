@@ -10,7 +10,8 @@ function leerUsuario() {
     li.innerHTML = `
       <span><strong>${usuario.usuario}</strong> - ${usuario.robot}</span>
       <button class="btn-delete" onclick="borrarUsuario(${usuario.id})">Eliminar</button>
-    `;
+      <button class="Actualizar" onclick="Actualizarusuario(${usuario.id})">Actualizar</button>
+      `;
     lista.appendChild(li);
   });
 }
