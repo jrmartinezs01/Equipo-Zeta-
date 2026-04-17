@@ -5,5 +5,5 @@
 	--Leer. JuanRa
 	--Listar. JuanRa 786a35e
 	--Delete. Sergio/Modular c64df84, 85dabab
-	--Update.
+	--Update. Alberto
 --Crear el videojuego: 
