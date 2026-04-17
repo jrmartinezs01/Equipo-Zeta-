@@ -1,4 +1,3 @@
-// --- Funcion Listar (Read) ---
 
 function leerUsuario() {
   const lista = document.getElementById("listaUsuarios");

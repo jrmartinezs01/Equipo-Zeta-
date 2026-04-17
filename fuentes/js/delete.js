@@ -1,5 +1,3 @@
-// --- Funcion Delete (Borrar) ---
-
 function borrarUsuario(id) {
   const indice = usuarios.findIndex(u => u.id === id);
   
@@ -7,7 +5,6 @@ function borrarUsuario(id) {
     const confirmacion = confirm(`¿Seguro que quieres eliminar a este usuario?`);
     if (confirmacion) {
       usuarios.splice(indice, 1);
-      // Volvemos a listar (función en listar.js)
       leerUsuario();
     }
   }

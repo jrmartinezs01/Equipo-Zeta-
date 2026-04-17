@@ -1,5 +1,3 @@
-// --- Funcion Create (Crear) ---
-
 function crearUsuario(usuario, contraseña) {
   const nuevoUsuario = {
     id: usuarios.length > 0 ? usuarios[usuarios.length - 1].id + 1 : 1,
@@ -17,7 +15,6 @@ function crearUsuario(usuario, contraseña) {
   return nuevoUsuario;
 }
 
-// Escuchador del botón Insertar
 document.addEventListener("DOMContentLoaded", function () {
   const boton = document.getElementById("botonInsertar");
   if (boton) {
@@ -34,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const nuevo = crearUsuario(usuarioInput, passInput);
       
-      // Actualizamos la vista (definida en listar.js)
       leerUsuario();
 
       alert(`Usuario "${nuevo.usuario}" creado correctamente.`);
