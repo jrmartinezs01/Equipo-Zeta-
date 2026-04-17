@@ -5,7 +5,7 @@ botonUpdate.addEventListener('click', verVistaUpdate)
 function verVistaUpdate(){
 	ocultarVistas()
 	vistaUpdate.classList.add('activa')
-	console.log('pinga')
+	console.log('a')
 }
 }
 

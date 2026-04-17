@@ -1,4 +1,3 @@
-'use strict'
 const vista1= document.querySelector('#Principal')
 const vista2= document.querySelector('#Creacion')
 const vista3= document.querySelector('#Lista')
