@@ -4,6 +4,6 @@
 	--Create. Sergio 8107cf7
 	--Leer. JuanRa
 	--Listar. JuanRa
-	--Delete.
+	--Delete.JuanRa
 	--Update. Alberto
 --Crear el videojuego:
