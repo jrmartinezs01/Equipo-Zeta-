@@ -34,7 +34,7 @@ class ListarController {
     }
 
     handleRead(id) {
-        const usuario = gestionUsuarios.leer(id);
+        const usuario = gestionUsuarios.leer(Number(id));
         if (usuario) {
             alert(`
                 DETALLE DEL USUARIO:
