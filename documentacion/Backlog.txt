@@ -2,8 +2,8 @@
 --Creación del CRUD: 
 	--Crear el menu. Alberto 2fcbdc0
 	--Create. Sergio 8107cf7
-	--Leer. JuanRa
-	--Listar. JuanRa 786a35e
-	--Delete. Sergio/Modular c64df84, 85dabab
+	--Leer. JuanRa / Refactor Clases (Terminado)
+	--Listar. JuanRa 786a35e / Refactor Clases (Terminado)
+	--Delete. Sergio/Modular c64df84, 85dabab (Terminado)
 	--Update. Alberto
 --Crear el videojuego: 
