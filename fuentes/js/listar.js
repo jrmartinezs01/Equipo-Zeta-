@@ -1,6 +1,4 @@
-import { gestionUsuarios } from './GestionUsuarios.js';
-
-export class ListarController {
+class ListarController {
     constructor() {
         this.init();
     }

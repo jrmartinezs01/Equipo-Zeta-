@@ -1,6 +1,4 @@
-import { gestionUsuarios } from './GestionUsuarios.js';
-
-export class CreateController {
+class CreateController {
     constructor() {
         this.init();
     }
@@ -38,7 +36,7 @@ export class CreateController {
 
         const nuevo = gestionUsuarios.crear(datos);
         
-        // Llamamos al listado (ahora a través de window o importación directa)
+        // Llamamos al listado (ahora a través de window o instancia global)
         if (window.listarController) {
             window.listarController.render();
         }

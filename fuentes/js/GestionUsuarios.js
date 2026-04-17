@@ -1,6 +1,4 @@
-import { Usuario } from './Usuario.js';
-
-export class GestionUsuarios {
+class GestionUsuarios {
     constructor() {
         this.usuarios = [];
     }
@@ -41,5 +39,5 @@ export class GestionUsuarios {
     }
 }
 
-// Exportamos una instancia única para mantener el estado (Singleton-ish)
-export const gestionUsuarios = new GestionUsuarios();
+// Creamos la instancia global para que todos la vean
+const gestionUsuarios = new GestionUsuarios();

@@ -1,4 +1,4 @@
-export class Usuario {
+class Usuario {
     constructor(id, nombre, password, nacimiento, robot, modo, mejoras, mision, imagen) {
         this.id = id;
         this.usuario = nombre;
