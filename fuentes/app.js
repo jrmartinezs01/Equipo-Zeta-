@@ -52,6 +52,13 @@ class GestionUsuarios {
     leer(id) {
         return this.usuarios.find(u => u.id === id) || null;
     }
+    actualizar(usuarioActualizado) {
+    const index = this.usuarios.findIndex(u => u.id === usuarioActualizado.id);
+
+    if (index !== -1) {
+        this.usuarios[index] = usuarioActualizado;
+    }
+}
 }
 
 // Instancia global para que los controladores la usen
