@@ -1,11 +1,26 @@
-function borrarUsuario(id) {
-  const indice = usuarios.findIndex(u => u.id === id);
-  
-  if (indice !== -1) {
-    const confirmacion = confirm(`¿Seguro que quieres eliminar a este usuario?`);
-    if (confirmacion) {
-      usuarios.splice(indice, 1);
-      leerUsuario();
+class DeleteController {
+    constructor() {
+        this.init();
     }
-  }
+
+    init() {
+        // Exponemos la función al objeto global window para que el onclick del HTML la encuentre
+        window.borrarUsuario = (id) => this.handleDelete(id);
+    }
+
+    handleDelete(id) {
+        const idNum = Number(id);
+        if (confirm("¿Seguro que quieres eliminar a este usuario?")) {
+            if (gestionarUsuarios.borrar(idNum)) {
+                // Si el borrado es correcto, refrescamos la lista
+                if (window.listarController) {
+                    window.listarController.render();
+                }
+                alert("Usuario eliminado correctamente.");
+            }
+        }
+    }
 }
+
+// Inicializamos el controlador
+new DeleteController();

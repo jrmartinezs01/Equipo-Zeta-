@@ -1,17 +1,37 @@
+class ListarController {
+    constructor() {
+        this.init();
+    }
 
-function leerUsuario() {
-  const lista = document.getElementById("listaUsuarios");
-  if (!lista) return;
+    init() {
+        window.listarController = this;
+        window.verDetalle = (id) => this.handleRead(id);
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            this.render();
+        });
+    }
 
-  lista.innerHTML = "";
+    render() {
+        const lista = document.getElementById("listaUsuarios");
+        if (!lista) return;
 
-  usuarios.forEach(usuario => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <span><strong>${usuario.usuario}</strong> - ${usuario.robot}</span>
-      <button class="btn-delete" onclick="borrarUsuario(${usuario.id})">Eliminar</button>
-      <button class="Actualizar" onclick="Actualizarusuario(${usuario.id})">Actualizar</button>
-      `;
-    lista.appendChild(li);
-  });
+        const usuarios = gestionarUsuarios.listar();
+        lista.innerHTML = "";
+        console.log('a')
+        usuarios.forEach(usuario => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span><strong>${usuario.usuario}</strong> - ${usuario.robot}</span>
+                <div class="botones-lista">
+                    <button class="btn-read" onclick="verDetalle(${usuario.id})">Leer</button>
+                    <button class="btn-edit" onclick="prepararEdicion(${usuario.id})">Editar</button>
+                    <button class="btn-delete" onclick="borrarUsuario(${usuario.id})">Eliminar</button>
+                </div>
+            `;
+            lista.appendChild(li);
+        });
+    }
 }
+
+new ListarController();

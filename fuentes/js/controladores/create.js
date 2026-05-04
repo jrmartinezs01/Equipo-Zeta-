@@ -1,56 +1,48 @@
-class GestorUsuarios {
-  constructor() {
-    this.usuarios = [];
-    this.inicializarEventos();
-  }
+class CreateController {
+    constructor() {
+        this.init();
+    }
 
-  crearUsuario(usuario, contraseña) {
-    const nuevoUsuario = {
-      id: this.usuarios.length > 0 ? this.usuarios[this.usuarios.length - 1].id + 1 : 1,
-      usuario,
-      contraseña,
-      nacimiento: document.getElementById("nacimiento").value,
-      robot: document.getElementById("robot").value,
-      modo: document.querySelector('input[name="modo"]:checked')?.value || "",
-      mejoras: Array.from(document.querySelectorAll('input[name="mejoras"]:checked')).map(cb => cb.value),
-      mision: document.getElementById("mision").value,
-      imagen: document.getElementById("imagen").files[0]?.name || ""
-    };
+    init() {
+        document.addEventListener("DOMContentLoaded", () => {
+            const boton = document.getElementById("botonInsertar");
+            if (boton) {
+                boton.addEventListener("click", (e) => this.handleInsert(e));
+            }
+        });
+    }
 
-    this.usuarios.push(nuevoUsuario);
-    return nuevoUsuario;
-  }
+    handleInsert(e) {
+        e.preventDefault();
 
-  inicializarEventos() {
-    document.addEventListener("DOMContentLoaded", () => {
-      const boton = document.getElementById("botonInsertar");
+        const usuarioInput = document.getElementById("usuario").value.trim();
+        const passInput = document.getElementById("password").value.trim();
 
-      if (boton) {
-        boton.addEventListener("click", (e) => {
-          e.preventDefault();
-
-          const usuarioInput = document.getElementById("usuario").value.trim();
-          const passInput = document.getElementById("password").value.trim();
-
-          if (usuarioInput === "" || passInput === "") {
+        if (usuarioInput === "" || passInput === "") {
             alert("Por favor, rellena los campos de Usuario y Contraseña.");
             return;
-          }
+        }
 
-          const nuevo = this.crearUsuario(usuarioInput, passInput);
+        const datos = {
+            usuario: usuarioInput,
+            password: passInput,
+            nacimiento: document.getElementById("nacimiento").value,
+            robot: document.getElementById("robot").value,
+            modo: document.querySelector('input[name="modo"]:checked')?.value || "",
+            mejoras: Array.from(document.querySelectorAll('input[name="mejoras"]:checked')).map(cb => cb.value),
+            mision: document.getElementById("mision").value,
+            imagen: document.getElementById("imagen").files[0]?.name || ""
+        };
 
-          this.leerUsuario();
+        const nuevo = gestionarUsuarios.crear(datos);
+        
+        // Llamamos al listado (ahora a través de window o instancia global)
+        if (window.listarController) {
+            window.listarController.render();
+        }
 
-          alert(`Usuario "${nuevo.usuario}" creado correctamente.`);
-        });
-      }
-    });
-  }
-
-  leerUsuario() {
-    console.log(this.usuarios);
-  }
+        alert(`Usuario "${nuevo.usuario}" creado correctamente.`);
+    }
 }
 
-// Crear una instancia de la clase
-const app = new GestorUsuarios();
+new CreateController();
