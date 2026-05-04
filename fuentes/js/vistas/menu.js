@@ -33,7 +33,9 @@ function ocultarVistas(){
 }
 const botonMenu = document.getElementById('botonMenu');
 const nav = document.getElementById('navPrincipal');
+	ocultarVistas()
 
 botonMenu.addEventListener('click', function() {
     nav.classList.toggle('visible');
+	ocultarVistas()
 });
