@@ -31,3 +31,11 @@ function ocultarVistas(){
 	vista2.classList.remove('activa')
 	vista3.classList.remove('activa')
 }
+const botonMenu = document.getElementById('botonMenu');
+const nav = document.getElementById('navPrincipal');
+	ocultarVistas()
+
+botonMenu.addEventListener('click', function() {
+    nav.classList.toggle('visible');
+	ocultarVistas()
+});
