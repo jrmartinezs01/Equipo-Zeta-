@@ -19,7 +19,9 @@
 		<a href="#">Menu principal</a>
 		<a href="#">Crear Robot</a>
 		<a href="#">Ver tus robots</a>
+        <a href="#">Mapa</a>
 	</nav>
+
     <main>
         <div class="vista activa" id="Principal">
             <p>Bienvenido a A.R.E.N.A. (Administración de Robots para Entornos Naturales y Acuáticos)</p>
@@ -28,6 +30,7 @@
         </div>
 
         <div class="vista" id="Creacion">
+            <!-- ... existing creation content ... -->
             <h2>Creación del Robot</h2>
             <form id="formulario" action="" method="get">
                 <input type="hidden" id="version" name="game_version" value="1.4.2">
@@ -92,6 +95,15 @@
             <h2>Lista de Usuarios</h2>
             <ul id="listaUsuarios"></ul>
         </div>
+
+        <div class="vista" id="Mapa">
+            <div class="hud">
+                <div class="stat">Basura Recogida: <span id="contador">0</span></div>
+            </div>
+            <div id="game-canvas">
+                <!-- El robot y la basura aparecerán aquí -->
+            </div>
+        </div>
     </main>
 		
     <footer>
@@ -108,5 +120,6 @@
     <script src="js/controladores/create.js"></script>
     <script src="js/controladores/delete.js"></script>
     <script src="js/vistas/menu.js"></script>
+    <script src="js/controladores/tycoon.js"></script>
 </body>
 </html>
