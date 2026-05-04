@@ -4,3 +4,17 @@
 .activa{
 	display:block;
 }
+body {
+    background-image: url('../imagenes/playa.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+#navPrincipal {
+    display: none;
+}
+
+#navPrincipal.visible {
+    display: block;
+}
