@@ -36,12 +36,22 @@ class CreateController {
 
         const nuevo = gestionarUsuarios.crear(datos);
         
+        // Inicializar el tycoon con los datos del nuevo robot
+        if (window.tycoonGame) {
+            window.tycoonGame.init(datos);
+        }
+
+        // Cambiar a la vista del mapa automáticamente
+        if (typeof verVista4 === 'function') {
+            verVista4();
+        }
+
         // Llamamos al listado (ahora a través de window o instancia global)
         if (window.listarController) {
             window.listarController.render();
         }
 
-        alert(`Usuario "${nuevo.usuario}" creado correctamente.`);
+        alert(`¡Robot de "${nuevo.usuario}" creado! Prepárate para limpiar.`);
     }
 }
 
