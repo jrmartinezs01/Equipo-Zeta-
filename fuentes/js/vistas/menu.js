@@ -1,4 +1,5 @@
 'use strict'
+const vistaUpdate=document.querySelector('#vistaUpdate')
 const vista1= document.querySelector('#Principal')
 const vista2= document.querySelector('#Creacion')
 const vista3= document.querySelector('#Lista')
@@ -24,4 +25,5 @@ function ocultarVistas(){
 	vista1.classList.remove('activa')
 	vista2.classList.remove('activa')
 	vista3.classList.remove('activa')
+	vistaUpdate.classList.remove('activa')
 }
