@@ -20,10 +20,8 @@ class TycoonGame {
         this.score = 0;             
         this.trashes = [];          
         this.numTrashes = 5;        
-        this.robotContainer = null;  // Contenedor que agrupa al robot y su batería
-        this.robotImg = null;        // Imagen del robot
-        this.batteryFill = null;     // Relleno de la batería (XP)
-        this.robotPos = { x: 50, y: 50 }; 
+        this.numRobots = 4;          // Límite de robots
+        this.robots = [];            // Arreglo para almacenar la flota de robots
         
         this.levelData = [
             { name: "1", folder: "robot_1", file: "robot.png", speed: 0.10, cost: 0 },
@@ -35,9 +33,6 @@ class TycoonGame {
             { name: "4", folder: "robot_4", file: "robot4.png", speed: 0.55, cost: 260 },
             { name: "4-2", folder: "robot_4", file: "robot4-2.png", speed: 0.75, cost: 380 }
         ];
-
-        this.currentLevelIndex = 0; 
-        this.hasNotifiedUpgrade = false; 
         
         this.isRunning = false;     
         this.animationId = null;    
@@ -51,40 +46,42 @@ class TycoonGame {
      */
     init(robotData) {
         if (this.isInitialized) {
-            if (this.robotContainer) this.robotContainer.remove();
+            this.robots.forEach(r => r.container.remove());
+            this.robots = [];
             this.trashes.forEach(t => t.element.remove());
             this.trashes = [];
             this.stop();
             this.score = 0;
-            this.currentLevelIndex = 0;
             this.updateHUD();
         }
 
-        // --- CREACIÓN DEL ROBOT DINÁMICO ---
-        // 1. Creamos el contenedor principal
-        this.robotContainer = document.createElement('div');
-        this.robotContainer.className = 'robot-container';
+        // --- CREACIÓN DE ROBOTS DINÁMICOS ---
+        for (let i = 0; i < this.numRobots; i++) {
+            const robot = {
+                container: document.createElement('div'),
+                img: document.createElement('img'),
+                batteryFill: document.createElement('div'),
+                pos: { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 },
+                levelIndex: 0,
+                collectedTrash: 0
+            };
 
-        // 2. Creamos la imagen del robot
-        this.robotImg = document.createElement('img');
-        this.robotImg.className = 'robot-sprite';
-        this.updateRobotImage(); // Asigna la imagen inicial
-        this.robotContainer.appendChild(this.robotImg);
+            robot.container.className = 'robot-container';
+            robot.img.className = 'robot-sprite';
+            
+            // Asignar imagen inicial
+            this.updateRobotImage(robot);
+            robot.container.appendChild(robot.img);
 
-        // 3. Creamos la estructura de la batería (Barra de XP)
-        const batteryCasing = document.createElement('div');
-        batteryCasing.className = 'battery-container';
-        
-        this.batteryFill = document.createElement('div');
-        this.batteryFill.className = 'battery-fill';
-        batteryCasing.appendChild(this.batteryFill);
-        
-        this.robotContainer.appendChild(batteryCasing);
+            const batteryCasing = document.createElement('div');
+            batteryCasing.className = 'battery-container';
+            robot.batteryFill.className = 'battery-fill';
+            batteryCasing.appendChild(robot.batteryFill);
+            robot.container.appendChild(batteryCasing);
 
-        // 4. Lo añadimos al escenario
-        this.canvas.appendChild(this.robotContainer);
-
-        this.robotPos = { x: 50, y: 50 }; 
+            this.canvas.appendChild(robot.container);
+            this.robots.push(robot);
+        }
 
         for (let i = 0; i < this.numTrashes; i++) {
             this.spawnTrash();
@@ -102,67 +99,51 @@ class TycoonGame {
     }
 
     /**
-     * Cambia la imagen del robot según el nivel.
+     * Cambia la imagen del robot según su nivel.
      */
-    updateRobotImage() {
-        const data = this.levelData[this.currentLevelIndex];
-        if (this.robotImg) {
-            this.robotImg.src = `imagenes/${data.folder}/${data.file}`;
+    updateRobotImage(robot) {
+        const data = this.levelData[robot.levelIndex];
+        if (robot.img) {
+            robot.img.src = `imagenes/${data.folder}/${data.file}`;
         }
     }
 
     /**
-     * Sincroniza HUD y la barra de batería.
+     * Sincroniza HUD y estado general.
      */
     updateHUD() {
-        const data = this.levelData[this.currentLevelIndex];
-        const nextData = this.levelData[this.currentLevelIndex + 1];
-
         if (this.contadorLabel) this.contadorLabel.innerText = this.score;
-        if (this.nivelLabel) this.nivelLabel.innerText = data.name;
         
-        if (this.upgradeNivelLabel) this.upgradeNivelLabel.innerText = data.name;
+        if (this.nivelLabel) this.nivelLabel.innerText = "Varios";
+        if (this.upgradeNivelLabel) this.upgradeNivelLabel.innerText = "Independiente";
         
         if (this.botonMejorar) {
-            if (!nextData) {
-                this.botonMejorar.innerText = "Nivel Máximo";
-                this.botonMejorar.disabled = true;
-                if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = "---";
-                if (this.batteryFill) this.batteryFill.style.width = "100%";
-            } else {
-                if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = nextData.cost;
-                this.botonMejorar.disabled = this.score < nextData.cost;
-                this.botonMejorar.innerText = `Mejorar a ${nextData.name}`;
-
-                // --- ACTUALIZAR BATERÍA ---
-                if (this.batteryFill) {
-                    const progreso = Math.min((this.score / nextData.cost) * 100, 100);
-                    this.batteryFill.style.width = `${progreso}%`;
-                    
-                    // Cambio de color según carga (Opcional, muy "Tycoon")
-                    if (progreso < 30) this.batteryFill.style.backgroundColor = "#e74c3c"; // Rojo
-                    else if (progreso < 70) this.batteryFill.style.backgroundColor = "#f1c40f"; // Amarillo
-                    else this.batteryFill.style.backgroundColor = "#2ecc71"; // Verde
-                }
-            }
+            this.botonMejorar.innerText = "Auto-Mejora Activa";
+            this.botonMejorar.disabled = true;
+            if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = "Auto";
         }
     }
 
-    getUpgradeCost() {
-        const nextData = this.levelData[this.currentLevelIndex + 1];
-        return nextData ? nextData.cost : Infinity;
-    }
+    /**
+     * Actualiza la batería de un robot individualmente.
+     */
+    updateRobotBattery(robot) {
+        const nextData = this.levelData[robot.levelIndex + 1];
+        if (!nextData) {
+            if (robot.batteryFill) {
+                robot.batteryFill.style.width = "100%";
+                robot.batteryFill.style.backgroundColor = "#2ecc71";
+            }
+            return;
+        }
 
-    upgrade() {
-        const cost = this.getUpgradeCost();
-        if (this.score >= cost && this.currentLevelIndex < this.levelData.length - 1) {
-            this.score -= cost; 
-            this.currentLevelIndex++; 
+        if (robot.batteryFill) {
+            const progreso = Math.min((robot.collectedTrash / nextData.cost) * 100, 100);
+            robot.batteryFill.style.width = `${progreso}%`;
             
-            this.hasNotifiedUpgrade = false; 
-            this.updateRobotImage();
-            this.updateHUD();
-            alert(`¡Robot mejorado al Nivel ${this.levelData[this.currentLevelIndex].name}!`);
+            if (progreso < 30) robot.batteryFill.style.backgroundColor = "#e74c3c"; // Rojo
+            else if (progreso < 70) robot.batteryFill.style.backgroundColor = "#f1c40f"; // Amarillo
+            else robot.batteryFill.style.backgroundColor = "#2ecc71"; // Verde
         }
     }
 
@@ -198,53 +179,59 @@ class TycoonGame {
     update() {
         if (!this.isRunning || this.trashes.length === 0) return;
 
-        const currentSpeed = this.levelData[this.currentLevelIndex].speed;
+        this.robots.forEach(robot => {
+            const currentSpeed = this.levelData[robot.levelIndex].speed;
 
-        let closestTrash = null;
-        let minDistance = Infinity;
+            let closestTrash = null;
+            let minDistance = Infinity;
 
-        for (const t of this.trashes) {
-            if (t.isCollecting) continue; 
-            const dx = t.pos.x - this.robotPos.x;
-            const dy = t.pos.y - this.robotPos.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < minDistance) {
-                minDistance = dist;
-                closestTrash = t;
+            for (const t of this.trashes) {
+                if (t.isCollecting) continue; 
+                const dx = t.pos.x - robot.pos.x;
+                const dy = t.pos.y - robot.pos.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closestTrash = t;
+                }
             }
-        }
 
-        if (closestTrash) {
-            const dx = closestTrash.pos.x - this.robotPos.x;
-            const dy = closestTrash.pos.y - this.robotPos.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (closestTrash) {
+                const dx = closestTrash.pos.x - robot.pos.x;
+                const dy = closestTrash.pos.y - robot.pos.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance > 2) {
-                this.robotPos.x += (dx / distance) * (currentSpeed);
-                this.robotPos.y += (dy / distance) * (currentSpeed);
-            } else {
-                this.collectTrash(closestTrash);
+                if (distance > 2) {
+                    robot.pos.x += (dx / distance) * currentSpeed;
+                    robot.pos.y += (dy / distance) * currentSpeed;
+                } else {
+                    this.collectTrash(closestTrash, robot);
+                }
             }
-        }
 
-        // --- ACTUALIZAMOS EL CONTENEDOR ENTERO ---
-        if (this.robotContainer) {
-            this.robotContainer.style.left = `${this.robotPos.x}%`;
-            this.robotContainer.style.top = `${this.robotPos.y}%`;
-        }
+            // --- ACTUALIZAMOS EL CONTENEDOR ENTERO ---
+            if (robot.container) {
+                robot.container.style.left = `${robot.pos.x}%`;
+                robot.container.style.top = `${robot.pos.y}%`;
+            }
+        });
     }
 
-    collectTrash(trashObj) {
+    collectTrash(trashObj, robot) {
         trashObj.isCollecting = true;
         this.score++;
-        this.updateHUD();
+        robot.collectedTrash++;
         
-        const cost = this.getUpgradeCost();
-        if (this.score >= cost && !this.hasNotifiedUpgrade && this.currentLevelIndex < this.levelData.length - 1) {
-            this.hasNotifiedUpgrade = true;
-            const nextLevel = this.levelData[this.currentLevelIndex + 1].name;
-            alert(`¡Ya puedes mejorar tu robot al nivel ${nextLevel}!`);
+        // Auto-mejora individual
+        const nextData = this.levelData[robot.levelIndex + 1];
+        if (nextData && robot.collectedTrash >= nextData.cost) {
+            robot.levelIndex++;
+            this.updateRobotImage(robot);
+            console.log(`Robot subió al nivel ${this.levelData[robot.levelIndex].name}`);
         }
+        
+        this.updateHUD();
+        this.updateRobotBattery(robot);
         
         trashObj.element.classList.add('collected');
         
