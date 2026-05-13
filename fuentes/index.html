@@ -57,36 +57,18 @@
                         <option value="">-- Selecciona --</option>
                         <option value="r1">WALL-E Mk1</option>
                         <option value="r2">TRASH-X 3000</option>
+						<option value="r2">TRASHER-S 7000</option>
+						<option value="r2">BUMBUM-A XS2</option>
                     </select>
                 </p>
-
-                <p>Modo de operación:</p>
+				
                 <p>
-                    <label><input type="radio" name="modo" value="auto"> Automático</label>
-                    <label><input type="radio" name="modo" value="manual" checked> Manual</label>
-                    <label><input type="radio" name="modo" value="hibrido"> Híbrido</label>
-                </p>
-
-                <p>Mejoras:</p>
-                <p>
-                    <label><input type="checkbox" name="mejoras" value="turbo"> Turbo</label>
-                    <label><input type="checkbox" name="mejoras" value="capacidad" checked> Contenedor extra</label>
-                    <label><input type="checkbox" name="mejoras" value="ia"> Módulo IA</label>
-                    <label><input type="checkbox" name="mejoras" value="solar"> Panel solar</label>
+                    <label for="mision">Misión:</label><br>
+                     <label>Limpiar el Mundo:</label><br>
                 </p>
 
                 <p>
-                    <label for="mision">Descripción de la misión:</label><br>
-                    <textarea id="mision" name="mision"></textarea>
-                </p>
-
-                <p>
-                    <label for="imagen">Imagen del robot:</label>
-                    <input type="file" id="imagen" name="imagen" accept="image/*">
-                </p>
-
-                <p>
-                    <button type="submit" id="botonInsertar">Insertar</button>
+                    <button type="submit" id="botonInsertar">Empezar</button>
                     <button type="reset">Reiniciar</button>
                 </p>
             </form>

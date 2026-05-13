@@ -30,8 +30,6 @@ class CreateController {
             robot: document.getElementById("robot").value,
             modo: document.querySelector('input[name="modo"]:checked')?.value || "",
             mejoras: Array.from(document.querySelectorAll('input[name="mejoras"]:checked')).map(cb => cb.value),
-            mision: document.getElementById("mision").value,
-            imagen: document.getElementById("imagen").files[0]?.name || ""
         };
 
         const nuevo = gestionarUsuarios.crear(datos);
