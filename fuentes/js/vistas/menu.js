@@ -10,7 +10,9 @@ const menu1 = document.getElementsByTagName('a')[0]
 const menu2 = document.getElementsByTagName('a')[1]
 const menu3 = document.getElementsByTagName('a')[2]
 const menu4 = document.getElementsByTagName('a')[3]
+const menu5 = document.getElementsByTagName('a')[4]
 const vista4 = document.getElementById('Mapa')
+const vista5 = document.getElementById('Mejoras')
 
 const botonMenu = document.getElementById('botonMenu');
 const nav = document.getElementById('navPrincipal');
@@ -19,6 +21,7 @@ menu1.addEventListener('click', verVista1)
 menu2.addEventListener('click', verVista2)
 menu3.addEventListener('click', verVista3)
 menu4.addEventListener('click', verVista4)
+menu5.addEventListener('click', verVista5)
 
 botonMenu.addEventListener('click', function() {
     nav.classList.toggle('visible');
@@ -45,9 +48,14 @@ function verVista4(){
         window.tycoonGame.start();
     }
 }
+function verVista5(){
+	ocultarVistas()
+	vista5.classList.add('activa')
+}
 function ocultarVistas(){
 	vista1.classList.remove('activa')
 	vista2.classList.remove('activa')
 	vista3.classList.remove('activa')
 	vista4.classList.remove('activa')
+	vista5.classList.remove('activa')
 }

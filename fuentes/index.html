@@ -20,6 +20,7 @@
 		<a href="#">Crear Robot</a>
 		<a href="#">Ver tus robots</a>
         <a href="#">Mapa</a>
+        <a href="#">Mejoras</a>
 	</nav>
 
     <main>
@@ -99,9 +100,24 @@
         <div class="vista" id="Mapa">
             <div class="hud">
                 <div class="stat">Basura Recogida: <span id="contador">0</span></div>
+                <div class="stat">Nivel Robot: <span id="nivel">1</span></div>
             </div>
             <div id="game-canvas">
                 <!-- El robot y la basura aparecerán aquí -->
+            </div>
+        </div>
+
+        <div class="vista" id="Mejoras">
+            <h2>Mejoras del Robot</h2>
+            <p>¡Usa la basura recogida para mejorar tu robot!</p>
+            <div class="upgrade-container">
+                <div class="upgrade-card">
+                    <h3>Subir de Nivel</h3>
+                    <p>Mejora la velocidad y el aspecto de tu robot.</p>
+                    <p>Nivel Actual: <span id="upgrade-nivel">1</span></p>
+                    <p>Coste: <span id="upgrade-coste">10</span> basuras</p>
+                    <button id="botonMejorar">Mejorar Robot</button>
+                </div>
             </div>
         </div>
     </main>

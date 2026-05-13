@@ -12,14 +12,38 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header h1 {
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.3);
+    padding: 10px;
 }
 
 #navPrincipal {
     display: none;
+    background: rgba(255,255,255,0.9);
+    padding: 10px;
+    border-radius: 5px;
 }
 
 #navPrincipal.visible {
     display: block;
+}
+
+#navPrincipal a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+#navPrincipal a:hover {
+    background-color: #ddd;
 }
 
 /* Juego Tycoon */
@@ -28,21 +52,30 @@ body {
     width: 100%;
     height: 450px;
     overflow: hidden;
-    background: transparent; /* Sin fondo para que no se vea el recuadro */
-    border: none; /* Sin bordes */
+    background: transparent;
+    border: none;
 }
 
 .hud {
-    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.stat {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #333;
+    color: #2c3e50;
 }
 
 .robot-sprite, .trash-sprite {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
     transform: translate(-50%, -50%);
     user-select: none;
@@ -51,4 +84,46 @@ body {
 .trash-sprite.collected {
     transform: translate(-50%, -50%) scale(0);
     transition: transform 0.3s ease-in;
+}
+
+/* Mejoras */
+.upgrade-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.upgrade-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border: 3px solid #f1c40f;
+}
+
+.upgrade-card h3 {
+    margin-top: 0;
+    color: #d35400;
+}
+
+button#botonMejorar {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button#botonMejorar:hover {
+    background-color: #2ecc71;
+}
+
+button#botonMejorar:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
 }
