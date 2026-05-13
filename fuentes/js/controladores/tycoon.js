@@ -10,6 +10,7 @@ class TycoonGame {
         this.canvas = document.getElementById('game-canvas');
         this.contadorLabel = document.getElementById('contador');
         this.nivelLabel = document.getElementById('nivel');
+        this.monedasLabel = document.getElementById('monedas'); // Nuevo: Monedas
         
         // Elementos de la interfaz de la pestaña de Mejoras
         this.upgradeNivelLabel = document.getElementById('upgrade-nivel');
@@ -18,10 +19,12 @@ class TycoonGame {
 
         // --- Estado del Juego ---
         this.score = 0;             
+        this.monedas = 10;           // Empieza con 10 monedas
         this.trashes = [];          
         this.numTrashes = 5;        
         this.numRobots = 4;          // Límite de robots
         this.robots = [];            // Arreglo para almacenar la flota de robots
+        this.robotCosts = [10, 20, 40, 80]; // Precios incrementales
         
         this.levelData = [
             { name: "1", folder: "robot_1", file: "robot.png", speed: 0.10, cost: 0 },
@@ -42,7 +45,7 @@ class TycoonGame {
     }
 
     /**
-     * Inicializa el juego con los datos del robot creado en el formulario.
+     * Inicializa el juego.
      */
     init(robotData) {
         if (this.isInitialized) {
@@ -52,11 +55,35 @@ class TycoonGame {
             this.trashes = [];
             this.stop();
             this.score = 0;
+            this.monedas = 10;
             this.updateHUD();
         }
 
-        // --- CREACIÓN DE ROBOTS DINÁMICOS ---
-        for (let i = 0; i < this.numRobots; i++) {
+        for (let i = 0; i < this.numTrashes; i++) {
+            this.spawnTrash();
+        }
+        
+        this.isInitialized = true;
+        this.updateHUD(); 
+        console.log("Tycoon inicializado. Listo para comprar robots.");
+    }
+
+    initUpgradeListener() {
+        if (this.botonMejorar) {
+            this.botonMejorar.addEventListener('click', () => this.comprarRobot());
+        }
+    }
+
+    getCurrentRobotCost() {
+        if (this.robots.length >= this.numRobots) return Infinity;
+        return this.robotCosts[this.robots.length];
+    }
+
+    comprarRobot() {
+        const cost = this.getCurrentRobotCost();
+        if (this.monedas >= cost && this.robots.length < this.numRobots) {
+            this.monedas -= cost;
+            
             const robot = {
                 container: document.createElement('div'),
                 img: document.createElement('img'),
@@ -81,20 +108,8 @@ class TycoonGame {
 
             this.canvas.appendChild(robot.container);
             this.robots.push(robot);
-        }
-
-        for (let i = 0; i < this.numTrashes; i++) {
-            this.spawnTrash();
-        }
-        
-        this.isInitialized = true;
-        this.updateHUD(); 
-        console.log("Tycoon inicializado con batería flotante.");
-    }
-
-    initUpgradeListener() {
-        if (this.botonMejorar) {
-            this.botonMejorar.addEventListener('click', () => this.upgrade());
+            
+            this.updateHUD();
         }
     }
 
@@ -113,14 +128,22 @@ class TycoonGame {
      */
     updateHUD() {
         if (this.contadorLabel) this.contadorLabel.innerText = this.score;
+        if (this.monedasLabel) this.monedasLabel.innerText = this.monedas;
         
         if (this.nivelLabel) this.nivelLabel.innerText = "Varios";
-        if (this.upgradeNivelLabel) this.upgradeNivelLabel.innerText = "Independiente";
+        if (this.upgradeNivelLabel) this.upgradeNivelLabel.innerText = `${this.robots.length}`;
         
         if (this.botonMejorar) {
-            this.botonMejorar.innerText = "Auto-Mejora Activa";
-            this.botonMejorar.disabled = true;
-            if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = "Auto";
+            if (this.robots.length >= this.numRobots) {
+                this.botonMejorar.innerText = "Flota Completa";
+                this.botonMejorar.disabled = true;
+                if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = "---";
+            } else {
+                const cost = this.getCurrentRobotCost();
+                this.botonMejorar.innerText = `Comprar Robot (${cost})`;
+                this.botonMejorar.disabled = this.monedas < cost;
+                if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = cost;
+            }
         }
     }
 
@@ -220,6 +243,7 @@ class TycoonGame {
     collectTrash(trashObj, robot) {
         trashObj.isCollecting = true;
         this.score++;
+        this.monedas++; // Gana una moneda por basura
         robot.collectedTrash++;
         
         // Auto-mejora individual
@@ -228,6 +252,11 @@ class TycoonGame {
             robot.levelIndex++;
             this.updateRobotImage(robot);
             console.log(`Robot subió al nivel ${this.levelData[robot.levelIndex].name}`);
+            
+            // Comprobar victoria
+            if (this.robots.length === this.numRobots && this.robots.every(r => r.levelIndex === this.levelData.length - 1)) {
+                this.victoria();
+            }
         }
         
         this.updateHUD();
@@ -236,12 +265,32 @@ class TycoonGame {
         trashObj.element.classList.add('collected');
         
         setTimeout(() => {
-            trashObj.element.remove();
+            if (trashObj.element && trashObj.element.parentNode) {
+                trashObj.element.remove();
+            }
             this.trashes = this.trashes.filter(t => t !== trashObj);
-            this.spawnTrash(); 
+            
+            // Solo hacer spawn de nueva basura si el juego no ha terminado
+            if (this.isRunning) {
+                this.spawnTrash(); 
+            }
         }, 500);
     }
 
+    victoria() {
+        this.stop();
+        
+        // Limpiar toda la basura restante de la pantalla
+        this.trashes.forEach(t => t.element.remove());
+        this.trashes = [];
+        
+        document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+        const vistaVictoria = document.getElementById('Victoria');
+        if (vistaVictoria) {
+            vistaVictoria.classList.add('activa');
+        }
+    }
+    
     gameLoop() {
         this.update();
         this.animationId = requestAnimationFrame(() => this.gameLoop());
