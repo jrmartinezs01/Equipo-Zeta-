@@ -5,5 +5,8 @@
 	--Leer. JuanRa / Refactor Clases (Terminado)
 	--Listar. JuanRa 786a35e / Refactor Clases (Terminado)
 	--Delete. Sergio/Modular c64df84, 85dabab (Terminado)
-	--Update. Alberto
+	--Update. Alberto 3781d5504ba21c02c7f2a442a00c238b47f7d6ff
 --Crear el videojuego: 
+--Actualizar el fondo Sergio
+--Crear el robot e interaccion con la basura Juanra
+--Administrar sprites de distintos robots Alberto
