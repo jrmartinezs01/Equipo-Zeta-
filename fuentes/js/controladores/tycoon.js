@@ -15,6 +15,7 @@ class TycoonGame {
         this.upgradeNivelLabel = document.getElementById('upgrade-nivel');
         this.upgradeCosteLabel = document.getElementById('upgrade-coste');
         this.botonMejorar = document.getElementById('botonMejorar');
+        this.xpBar = document.getElementById('xp-bar'); // Nueva barra de XP
 
         // --- Estado del Juego ---
         this.score = 0;             // Monedas / Basura recogida
@@ -121,11 +122,18 @@ class TycoonGame {
                 this.botonMejorar.innerText = "Nivel Máximo";
                 this.botonMejorar.disabled = true;
                 if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = "---";
+                if (this.xpBar) this.xpBar.style.width = "100%"; // Barra llena al máximo
             } else {
                 if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = nextData.cost;
                 // Deshabilitar botón si no hay suficiente dinero
                 this.botonMejorar.disabled = this.score < nextData.cost;
                 this.botonMejorar.innerText = `Mejorar a ${nextData.name}`;
+
+                // Calcular progreso para la barra de XP
+                if (this.xpBar) {
+                    const progreso = Math.min((this.score / nextData.cost) * 100, 100);
+                    this.xpBar.style.width = `${progreso}%`;
+                }
             }
         }
     }
