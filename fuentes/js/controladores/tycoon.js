@@ -15,19 +15,16 @@ class TycoonGame {
         this.upgradeNivelLabel = document.getElementById('upgrade-nivel');
         this.upgradeCosteLabel = document.getElementById('upgrade-coste');
         this.botonMejorar = document.getElementById('botonMejorar');
-        this.xpBar = document.getElementById('xp-bar'); // Nueva barra de XP
 
         // --- Estado del Juego ---
-        this.score = 0;             // Monedas / Basura recogida
-        this.trashes = [];          // Lista de objetos que representan la basura en pantalla
-        this.numTrashes = 5;        // Cantidad constante de basura que queremos mantener
-        this.robot = null;          // Elemento img del robot
-        this.robotPos = { x: 50, y: 50 }; // Posición inicial (en %)
+        this.score = 0;             
+        this.trashes = [];          
+        this.numTrashes = 5;        
+        this.robotContainer = null;  // Contenedor que agrupa al robot y su batería
+        this.robotImg = null;        // Imagen del robot
+        this.batteryFill = null;     // Relleno de la batería (XP)
+        this.robotPos = { x: 50, y: 50 }; 
         
-        /**
-         * levelData: Array de objetos que define la progresión del juego.
-         * En DAW 1, esto es un gran ejemplo de cómo separar los datos de la lógica.
-         */
         this.levelData = [
             { name: "1", folder: "robot_1", file: "robot.png", speed: 0.10, cost: 0 },
             { name: "1-2", folder: "robot_1", file: "robot1-2-.png", speed: 0.15, cost: 15 },
@@ -39,13 +36,12 @@ class TycoonGame {
             { name: "4-2", folder: "robot_4", file: "robot4-2.png", speed: 0.75, cost: 380 }
         ];
 
-        this.currentLevelIndex = 0; // Índice que apunta al nivel actual en el array
-        this.hasNotifiedUpgrade = false; // Bandera para que el aviso de mejora salga solo una vez
+        this.currentLevelIndex = 0; 
+        this.hasNotifiedUpgrade = false; 
         
-        // --- Control del Ciclo de Vida ---
-        this.isRunning = false;     // Si el juego se está moviendo o no
-        this.animationId = null;    // ID del frame de animación (para poder pararlo)
-        this.isInitialized = false; // Para evitar que el juego arranque sin un robot creado
+        this.isRunning = false;     
+        this.animationId = null;    
+        this.isInitialized = false; 
 
         this.initUpgradeListener();
     }
@@ -54,9 +50,8 @@ class TycoonGame {
      * Inicializa el juego con los datos del robot creado en el formulario.
      */
     init(robotData) {
-        // Si ya hay un juego en marcha, limpiamos el escenario anterior
         if (this.isInitialized) {
-            if (this.robot) this.robot.remove();
+            if (this.robotContainer) this.robotContainer.remove();
             this.trashes.forEach(t => t.element.remove());
             this.trashes = [];
             this.stop();
@@ -65,27 +60,41 @@ class TycoonGame {
             this.updateHUD();
         }
 
-        // Crear el elemento visual del robot
-        this.robot = document.createElement('img');
-        this.robot.className = 'robot-sprite';
-        this.updateRobotImage(); // Asigna la imagen según el nivel
-        this.canvas.appendChild(this.robot);
+        // --- CREACIÓN DEL ROBOT DINÁMICO ---
+        // 1. Creamos el contenedor principal
+        this.robotContainer = document.createElement('div');
+        this.robotContainer.className = 'robot-container';
 
-        this.robotPos = { x: 50, y: 50 }; // Reinicia posición al centro
+        // 2. Creamos la imagen del robot
+        this.robotImg = document.createElement('img');
+        this.robotImg.className = 'robot-sprite';
+        this.updateRobotImage(); // Asigna la imagen inicial
+        this.robotContainer.appendChild(this.robotImg);
 
-        // Crea las basuras iniciales
+        // 3. Creamos la estructura de la batería (Barra de XP)
+        const batteryCasing = document.createElement('div');
+        batteryCasing.className = 'battery-container';
+        
+        this.batteryFill = document.createElement('div');
+        this.batteryFill.className = 'battery-fill';
+        batteryCasing.appendChild(this.batteryFill);
+        
+        this.robotContainer.appendChild(batteryCasing);
+
+        // 4. Lo añadimos al escenario
+        this.canvas.appendChild(this.robotContainer);
+
+        this.robotPos = { x: 50, y: 50 }; 
+
         for (let i = 0; i < this.numTrashes; i++) {
             this.spawnTrash();
         }
         
         this.isInitialized = true;
-        this.updateHUD(); // Sincroniza los textos de la pantalla
-        console.log("Tycoon inicializado. Nivel 1. Velocidad equilibrada.");
+        this.updateHUD(); 
+        console.log("Tycoon inicializado con batería flotante.");
     }
 
-    /**
-     * Escucha el evento click del botón de mejora en la pestaña correspondiente.
-     */
     initUpgradeListener() {
         if (this.botonMejorar) {
             this.botonMejorar.addEventListener('click', () => this.upgrade());
@@ -93,78 +102,70 @@ class TycoonGame {
     }
 
     /**
-     * Cambia el atributo src del robot basándose en los datos del nivel actual.
+     * Cambia la imagen del robot según el nivel.
      */
     updateRobotImage() {
         const data = this.levelData[this.currentLevelIndex];
-        if (this.robot) {
-            this.robot.src = `imagenes/${data.folder}/${data.file}`;
+        if (this.robotImg) {
+            this.robotImg.src = `imagenes/${data.folder}/${data.file}`;
         }
     }
 
     /**
-     * Sincroniza toda la información visual (HUD) con las variables del código.
+     * Sincroniza HUD y la barra de batería.
      */
     updateHUD() {
         const data = this.levelData[this.currentLevelIndex];
         const nextData = this.levelData[this.currentLevelIndex + 1];
 
-        // Actualiza etiquetas en la vista del Mapa
         if (this.contadorLabel) this.contadorLabel.innerText = this.score;
         if (this.nivelLabel) this.nivelLabel.innerText = data.name;
         
-        // Actualiza etiquetas en la vista de Mejoras
         if (this.upgradeNivelLabel) this.upgradeNivelLabel.innerText = data.name;
         
-        // Controla el estado del botón de mejora
         if (this.botonMejorar) {
             if (!nextData) {
                 this.botonMejorar.innerText = "Nivel Máximo";
                 this.botonMejorar.disabled = true;
                 if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = "---";
-                if (this.xpBar) this.xpBar.style.width = "100%"; // Barra llena al máximo
+                if (this.batteryFill) this.batteryFill.style.width = "100%";
             } else {
                 if (this.upgradeCosteLabel) this.upgradeCosteLabel.innerText = nextData.cost;
-                // Deshabilitar botón si no hay suficiente dinero
                 this.botonMejorar.disabled = this.score < nextData.cost;
                 this.botonMejorar.innerText = `Mejorar a ${nextData.name}`;
 
-                // Calcular progreso para la barra de XP
-                if (this.xpBar) {
+                // --- ACTUALIZAR BATERÍA ---
+                if (this.batteryFill) {
                     const progreso = Math.min((this.score / nextData.cost) * 100, 100);
-                    this.xpBar.style.width = `${progreso}%`;
+                    this.batteryFill.style.width = `${progreso}%`;
+                    
+                    // Cambio de color según carga (Opcional, muy "Tycoon")
+                    if (progreso < 30) this.batteryFill.style.backgroundColor = "#e74c3c"; // Rojo
+                    else if (progreso < 70) this.batteryFill.style.backgroundColor = "#f1c40f"; // Amarillo
+                    else this.batteryFill.style.backgroundColor = "#2ecc71"; // Verde
                 }
             }
         }
     }
 
-    /**
-     * Retorna el coste del siguiente nivel si existe.
-     */
     getUpgradeCost() {
         const nextData = this.levelData[this.currentLevelIndex + 1];
         return nextData ? nextData.cost : Infinity;
     }
 
-    /**
-     * Ejecuta el proceso de subir de nivel restando el coste correspondiente.
-     */
     upgrade() {
         const cost = this.getUpgradeCost();
         if (this.score >= cost && this.currentLevelIndex < this.levelData.length - 1) {
-            this.score -= cost; // Restamos el coste (economía del Tycoon)
-            this.currentLevelIndex++; // Avanzamos al siguiente objeto del array
+            this.score -= cost; 
+            this.currentLevelIndex++; 
             
-            this.hasNotifiedUpgrade = false; // Reset para el siguiente aviso
+            this.hasNotifiedUpgrade = false; 
             this.updateRobotImage();
             this.updateHUD();
             alert(`¡Robot mejorado al Nivel ${this.levelData[this.currentLevelIndex].name}!`);
         }
     }
 
-    /**
-     * Activa el bucle del juego si todo está listo.
-     */
     start() {
         if (this.isInitialized && !this.isRunning) {
             this.isRunning = true;
@@ -172,23 +173,16 @@ class TycoonGame {
         }
     }
 
-    /**
-     * Detiene el movimiento del robot.
-     */
     stop() {
         this.isRunning = false;
         cancelAnimationFrame(this.animationId);
     }
 
-    /**
-     * Crea un elemento de basura en una posición aleatoria del canvas.
-     */
     spawnTrash() {
         const trashElement = document.createElement('img');
         trashElement.className = 'trash-sprite';
         trashElement.src = 'imagenes/basura.png';
 
-        // Generamos posición aleatoria en porcentaje (10% a 90% para evitar bordes)
         const pos = {
             x: Math.random() * 80 + 10,
             y: Math.random() * 80 + 10
@@ -198,27 +192,21 @@ class TycoonGame {
         trashElement.style.top = `${pos.y}%`;
 
         this.canvas.appendChild(trashElement);
-        // Guardamos el elemento y su posición en un array para que el robot pueda "verlo"
         this.trashes.push({ element: trashElement, pos: pos, isCollecting: false });
     }
 
-    /**
-     * Algoritmo de actualización: Aquí es donde reside la "IA" del robot.
-     */
     update() {
         if (!this.isRunning || this.trashes.length === 0) return;
 
         const currentSpeed = this.levelData[this.currentLevelIndex].speed;
 
-        // 1. DETERMINAR OBJETIVO: Buscar la basura más cercana
         let closestTrash = null;
         let minDistance = Infinity;
 
         for (const t of this.trashes) {
-            if (t.isCollecting) continue; // Ignora basura que ya está desapareciendo
+            if (t.isCollecting) continue; 
             const dx = t.pos.x - this.robotPos.x;
             const dy = t.pos.y - this.robotPos.y;
-            // Cálculo de distancia mediante Pitágoras
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < minDistance) {
                 minDistance = dist;
@@ -226,36 +214,31 @@ class TycoonGame {
             }
         }
 
-        // 2. MOVIMIENTO: Desplazarse hacia el objetivo
         if (closestTrash) {
             const dx = closestTrash.pos.x - this.robotPos.x;
             const dy = closestTrash.pos.y - this.robotPos.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance > 2) {
-                // Normalizamos el vector de movimiento y aplicamos la velocidad
                 this.robotPos.x += (dx / distance) * (currentSpeed);
                 this.robotPos.y += (dy / distance) * (currentSpeed);
             } else {
-                // Si la distancia es muy corta, el robot la ha recogido
                 this.collectTrash(closestTrash);
             }
         }
 
-        // 3. RENDERIZADO: Aplicar las nuevas coordenadas al elemento HTML
-        this.robot.style.left = `${this.robotPos.x}%`;
-        this.robot.style.top = `${this.robotPos.y}%`;
+        // --- ACTUALIZAMOS EL CONTENEDOR ENTERO ---
+        if (this.robotContainer) {
+            this.robotContainer.style.left = `${this.robotPos.x}%`;
+            this.robotContainer.style.top = `${this.robotPos.y}%`;
+        }
     }
 
-    /**
-     * Lógica de recolección: aumenta puntos, avisa de mejoras y repone la basura.
-     */
     collectTrash(trashObj) {
         trashObj.isCollecting = true;
         this.score++;
         this.updateHUD();
         
-        // Comprobar si puede mejorar para mostrar el aviso
         const cost = this.getUpgradeCost();
         if (this.score >= cost && !this.hasNotifiedUpgrade && this.currentLevelIndex < this.levelData.length - 1) {
             this.hasNotifiedUpgrade = true;
@@ -263,28 +246,21 @@ class TycoonGame {
             alert(`¡Ya puedes mejorar tu robot al nivel ${nextLevel}!`);
         }
         
-        // Animación de desaparición (clase CSS)
         trashObj.element.classList.add('collected');
         
-        // Esperamos a que la animación termine antes de borrar y crear una nueva
         setTimeout(() => {
             trashObj.element.remove();
             this.trashes = this.trashes.filter(t => t !== trashObj);
-            this.spawnTrash(); // Reposición infinita de basura
+            this.spawnTrash(); 
         }, 500);
     }
 
-    /**
-     * Bucle principal de animación (High Performance Loop)
-     */
     gameLoop() {
         this.update();
-        // Llama a la función de nuevo en el siguiente refresco del monitor (60fps)
         this.animationId = requestAnimationFrame(() => this.gameLoop());
     }
 }
 
-// Inicialización global cuando el DOM está listo
 window.addEventListener('DOMContentLoaded', () => {
     window.tycoonGame = new TycoonGame();
 });
