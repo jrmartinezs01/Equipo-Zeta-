@@ -9,6 +9,16 @@ class ListarController {
         
         document.addEventListener("DOMContentLoaded", () => {
             this.render();
+            
+            const lista = document.getElementById("listaUsuarios");
+            if (lista) {
+                lista.addEventListener("click", (e) => {
+                    if (e.target.classList.contains("btn-edit")) {
+                        const id = e.target.dataset.id;
+                        this.prepararEdicion(id);
+                    }
+                });
+            }
         });
     }
 
@@ -25,18 +35,11 @@ class ListarController {
                 <span><strong>${usuario.usuario}</strong> - ${usuario.robot}</span>
                 <div class="botones-lista">
                     <button class="btn-read" onclick="verDetalle(${usuario.id})">Leer</button>
-                    <button class="btn-edit" id='update' data-id="${usuario.id}">Editar</button>
+                    <button class="btn-edit" data-id="${usuario.id}">Editar</button>
                     <button class="btn-delete" onclick="borrarUsuario(${usuario.id})">Eliminar</button>
                 </div>
             `;
             lista.appendChild(li);
-            lista.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btn-edit")) {
-        const id = e.target.dataset.id;
-        this.prepararEdicion(id);
-        
-    }
-});
         });
     }
 
@@ -118,31 +121,40 @@ class ListarController {
         </p>
     </form>
   `;
-  const form = document.getElementById("formulario");
-  console.log(form)
-const btn = document.querySelector("#btnActualizar");
-console.log(btn);
-btn.addEventListener("click", () => {
-    const datos = new FormData(form);
+  // Cambiar a la vista de edición para que el usuario pueda ver el formulario
+  if (typeof verUpdate === 'function') {
+      verUpdate();
+  }
 
-    const usuarioActualizado = {
-        id: usuario.id,
-        usuario: datos.get("usuario"),
-        password: datos.get("password"),
-        nacimiento: datos.get("nacimiento"),
-        robot: datos.get("robot"),
-        modo: datos.get("modo"),
-        mejoras: datos.getAll("mejoras"),
-        mision: datos.get("mision")
-    };
+  const form = ZonaActualizar.querySelector("form");
+  const btn = ZonaActualizar.querySelector("#btnActualizar");
 
-    gestionarUsuarios.actualizar(usuarioActualizado);
+  btn.addEventListener("click", () => {
+      const datos = new FormData(form);
 
-    this.render();
-    ZonaActualizar.innerHTML = "";
+      const usuarioActualizado = {
+          id: usuario.id,
+          usuario: datos.get("usuario"),
+          password: datos.get("password"),
+          nacimiento: datos.get("nacimiento"),
+          robot: datos.get("robot"),
+          modo: datos.get("modo"),
+          mejoras: datos.getAll("mejoras"),
+          mision: datos.get("mision")
+      };
 
-    alert("Usuario actualizado correctamente");
-});
+      gestionarUsuarios.actualizar(usuarioActualizado);
+
+      this.render();
+      ZonaActualizar.innerHTML = "";
+
+      alert("Usuario actualizado correctamente");
+      
+      // Redirigir de vuelta a la lista para ver los cambios
+      if (typeof verVista3 === 'function') {
+          verVista3();
+      }
+  });
     }
 }
 
