@@ -1,0 +1,45 @@
+================================================================================
+                    MANUAL DE USUARIO - ROBOCLEAN TYCOON
+================================================================================
+
+¡Bienvenido a RoboClean Tycoon! Este manual te guiará sobre cómo jugar, gestionar tu robot de limpieza y aprovechar al máximo las características del juego.
+
+1. INTRODUCCIÓN Y OBJETIVO DEL JUEGO
+--------------------------------------------------------------------------------
+El objetivo principal de RoboClean Tycoon es mantener limpio el entorno utilizando un robot de limpieza inteligente. A medida que tu robot completa sus tareas de limpieza, obtendrá experiencia que le permitirá subir de nivel, haciéndose más rápido y eficiente, mientras vigilas que no se quede sin batería.
+
+2. CÓMO EMPEZAR A JUGAR
+--------------------------------------------------------------------------------
+1. Abre el archivo "index.html" (ubicado en la carpeta "fuentes") en tu navegador web.
+2. Al iniciar, accederás a la vista principal (menú o creador de partida).
+3. Dependiendo del progreso implementado, podrás configurar tu robot o partida inicial.
+4. Una vez iniciado, el juego comenzará en el escenario principal, donde verás las zonas de limpieza y tu robot en acción.
+
+3. INTERFAZ PRINCIPAL
+--------------------------------------------------------------------------------
+En la pantalla de juego, observarás varios elementos importantes:
+- Área de Juego: Donde el robot se desplaza entre diferentes zonas para limpiar la suciedad.
+- Panel de Estado: Muestra la información de tu robot, como su nivel actual.
+- Barra de Experiencia: Una barra visual que se llena conforme el robot limpia zonas. Una vez completa, el robot sube de nivel.
+- Barra de Batería: Indica la energía restante. Limpiar y desplazarse consume batería.
+
+4. MECÁNICAS BÁSICAS
+--------------------------------------------------------------------------------
+- Limpieza: El robot se dirigirá a las zonas sucias para limpiarlas automáticamente.
+- Batería: Asegúrate de que el robot no se quede sin energía. En caso de niveles bajos, necesitará recargarse en su base.
+- Experiencia y Niveles: A medida que el robot gana experiencia (XP) por cada zona limpia, irá subiendo de nivel. Cada nuevo nivel puede otorgarle mejoras, como mayor velocidad o capacidad de batería extendida.
+- Obstáculos (si los hay): Ten en cuenta la distribución de la sala, ya que el robot utilizará algoritmos para encontrar la ruta más corta hasta la suciedad.
+
+5. CONTROLES Y OPCIONES
+--------------------------------------------------------------------------------
+- Clics en Zonas (si es interactivo): En algunas versiones, puedes hacer clic en zonas para marcar prioridades.
+- Botones de Creación y Mejoras: En la interfaz encontrarás opciones para gestionar al robot, tal vez comprar mejoras si tienes los recursos suficientes.
+
+6. SOLUCIÓN DE PROBLEMAS Y CONSEJOS
+--------------------------------------------------------------------------------
+- Si el juego no carga, comprueba que estás abriendo el archivo "index.html" en un navegador compatible (Chrome, Edge, Firefox, Safari).
+- Si el diseño se ve mal o hay elementos descolocados, asegúrate de no haber modificado los archivos dentro de la carpeta "fuentes/css".
+- ¡Estrategia! En etapas tempranas, no dejes que el robot se agote lejos de la base de recarga.
+
+¡Disfruta de RoboClean Tycoon! Si encuentras algún problema, contacta con el Equipo Zeta en GitHub.
+================================================================================
