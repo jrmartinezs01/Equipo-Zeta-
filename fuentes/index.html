@@ -20,7 +20,7 @@
 		<a href="#">Crear Robot</a>
 		<a href="#">Ver tus robots</a>
         <a href="#">Mapa</a>
-        <a href="#">Mejoras</a>
+        <a href="#">Tienda</a>
 	</nav>
 
     <main>
@@ -126,10 +126,17 @@
             <!-- Contenido de actualización de los compañeros -->
         </div>
 
-        <div class="vista" id="Victoria" style="text-align: center; margin-top: 50px;">
-            <h2>¡Victoria!</h2>
-            <p>¡Tus 4 robots han alcanzado el máximo nivel y la playa está completamente limpia!</p>
-            <p>Has ganado el juego.</p>
+        <div class="vista" id="Victoria">
+            <div class="victoria-overlay">
+                <div class="victoria-card">
+                    <div class="victoria-stars">⭐⭐⭐</div>
+                    <h2 class="victoria-titulo">¡VICTORIA!</h2>
+                    <p class="victoria-subtitulo">¡La playa está completamente limpia!</p>
+                    <p class="victoria-desc">Tus 4 robots han alcanzado el nivel máximo.<br>¡Eres el mejor gestor de robots de la costa!</p>
+                    <div class="victoria-robots">🤖🤖🤖🤖</div>
+                    <button id="botonJugarDeNuevo" onclick="location.reload()">🔄 Jugar de nuevo</button>
+                </div>
+            </div>
         </div>
         </div>
     </main>

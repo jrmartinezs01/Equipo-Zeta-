@@ -6,6 +6,7 @@ const vista3 = document.querySelector('#Lista')
 const vista4 = document.querySelector('#Mapa')
 const vista5 = document.querySelector('#Mejoras')
 const vistaUpdate = document.querySelector('#vistaUpdate')
+const vistaVictoria = document.querySelector('#Victoria')
 
 // Enlaces de navegación
 const menu1 = document.getElementsByTagName('a')[0]
@@ -67,6 +68,7 @@ function ocultarVistas(){
 	vista4.classList.remove('activa')
 	vista5.classList.remove('activa')
 	if (vistaUpdate) vistaUpdate.classList.remove('activa')
+	if (vistaVictoria) vistaVictoria.classList.remove('activa')
 }
 
 // Botones adicionales si existen

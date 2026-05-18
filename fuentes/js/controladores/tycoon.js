@@ -89,6 +89,9 @@ class TycoonGame {
                 img: document.createElement('img'),
                 batteryFill: document.createElement('div'),
                 pos: { x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 },
+                // Movimiento independiente: offset de wandering único por robot
+                wanderOffset: Math.random() * Math.PI * 2,
+                wanderSpeed: 0.008 + Math.random() * 0.012,
                 levelIndex: 0,
                 collectedTrash: 0
             };
@@ -199,6 +202,25 @@ class TycoonGame {
         this.trashes.push({ element: trashElement, pos: pos, isCollecting: false });
     }
 
+    /**
+     * Efecto visual de brillo cuando el robot sube de nivel.
+     */
+    triggerLevelUpEffect(robot) {
+        if (!robot.container) return;
+        robot.container.classList.add('level-up');
+        
+        // Mostrar texto flotante "¡Nivel Up!"
+        const txt = document.createElement('span');
+        txt.className = 'level-up-text';
+        txt.textContent = `⬆ Nivel ${this.levelData[robot.levelIndex].name}!`;
+        robot.container.appendChild(txt);
+        
+        setTimeout(() => {
+            robot.container.classList.remove('level-up');
+            if (txt.parentNode) txt.remove();
+        }, 1000);
+    }
+
     update() {
         if (!this.isRunning || this.trashes.length === 0) return;
 
@@ -225,8 +247,17 @@ class TycoonGame {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance > 2) {
-                    robot.pos.x += (dx / distance) * currentSpeed;
-                    robot.pos.y += (dy / distance) * currentSpeed;
+                    // Movimiento independiente: cada robot tiene un pequeño desvío de wandering
+                    robot.wanderOffset += robot.wanderSpeed;
+                    const wanderX = Math.sin(robot.wanderOffset) * 0.4;
+                    const wanderY = Math.cos(robot.wanderOffset * 1.3) * 0.4;
+
+                    robot.pos.x += (dx / distance) * currentSpeed + wanderX * currentSpeed;
+                    robot.pos.y += (dy / distance) * currentSpeed + wanderY * currentSpeed;
+
+                    // Mantener dentro del canvas
+                    robot.pos.x = Math.max(2, Math.min(98, robot.pos.x));
+                    robot.pos.y = Math.max(2, Math.min(98, robot.pos.y));
                 } else {
                     this.collectTrash(closestTrash, robot);
                 }
@@ -252,6 +283,9 @@ class TycoonGame {
             robot.levelIndex++;
             this.updateRobotImage(robot);
             console.log(`Robot subió al nivel ${this.levelData[robot.levelIndex].name}`);
+            
+            // Efecto visual de brillo al subir de nivel
+            this.triggerLevelUpEffect(robot);
             
             // Comprobar victoria
             if (this.robots.length === this.numRobots && this.robots.every(r => r.levelIndex === this.levelData.length - 1)) {
