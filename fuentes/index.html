@@ -20,7 +20,7 @@
 		<a href="#">Crear Robot</a>
 		<a href="#">Ver tus robots</a>
         <a href="#">Mapa</a>
-        <a href="#">Mejoras</a>
+        <a href="#">Tienda</a>
 	</nav>
 
     <main>
@@ -57,18 +57,36 @@
                         <option value="">-- Selecciona --</option>
                         <option value="r1">WALL-E Mk1</option>
                         <option value="r2">TRASH-X 3000</option>
-						<option value="r2">TRASHER-S 7000</option>
-						<option value="r2">BUMBUM-A XS2</option>
                     </select>
                 </p>
-				
+
+                <p>Modo de operación:</p>
                 <p>
-                    <label for="mision">Misión:</label><br>
-                     <label>Limpiar el Mundo:</label><br>
+                    <label><input type="radio" name="modo" value="auto"> Automático</label>
+                    <label><input type="radio" name="modo" value="manual" checked> Manual</label>
+                    <label><input type="radio" name="modo" value="hibrido"> Híbrido</label>
+                </p>
+
+                <p>Mejoras:</p>
+                <p>
+                    <label><input type="checkbox" name="mejoras" value="turbo"> Turbo</label>
+                    <label><input type="checkbox" name="mejoras" value="capacidad" checked> Contenedor extra</label>
+                    <label><input type="checkbox" name="mejoras" value="ia"> Módulo IA</label>
+                    <label><input type="checkbox" name="mejoras" value="solar"> Panel solar</label>
                 </p>
 
                 <p>
-                    <button type="submit" id="botonInsertar">Empezar</button>
+                    <label for="mision">Descripción de la misión:</label><br>
+                    <textarea id="mision" name="mision"></textarea>
+                </p>
+
+                <p>
+                    <label for="imagen">Imagen del robot:</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*">
+                </p>
+
+                <p>
+                    <button type="submit" id="botonInsertar">Insertar</button>
                     <button type="reset">Reiniciar</button>
                 </p>
             </form>
@@ -80,6 +98,7 @@
         </div>
         <div class="vista" id="Mapa">
             <div class="hud">
+                <div class="stat">Monedas: <span id="monedas">10</span></div>
                 <div class="stat">Basura: <span id="contador">0</span></div>
                 <div class="stat">Nivel: <span id="nivel">1</span></div>
             </div>
@@ -89,15 +108,15 @@
         </div>
 
         <div class="vista" id="Mejoras">
-            <h2>Mejoras del Robot</h2>
-            <p>¡Usa la basura recogida para mejorar tu robot!</p>
+            <h2>Tienda de Robots</h2>
+            <p>¡Usa las monedas recogidas para añadir nuevos robots a tu flota!</p>
             <div class="upgrade-container">
                 <div class="upgrade-card">
-                    <h3>Subir de Nivel</h3>
-                    <p>Mejora la velocidad y el aspecto de tu robot.</p>
-                    <p>Nivel Actual: <span id="upgrade-nivel">1</span></p>
-                    <p>Coste: <span id="upgrade-coste">10</span> basuras</p>
-                    <button id="botonMejorar">Mejorar Robot</button>
+                    <h3>Comprar Robot</h3>
+                    <p>Añade un nuevo robot a tu flota (Máximo 4).</p>
+                    <p>Robots Activos: <span id="upgrade-nivel">0</span>/4</p>
+                    <p>Coste: <span id="upgrade-coste">10</span> monedas</p>
+                    <button id="botonMejorar">Comprar Robot</button>
                 </div>
             </div>
         </div>
@@ -105,6 +124,19 @@
         <div class="vista" id="vistaUpdate">
             <h2>Actualización de Robot</h2>
             <!-- Contenido de actualización de los compañeros -->
+        </div>
+
+        <div class="vista" id="Victoria">
+            <div class="victoria-overlay">
+                <div class="victoria-card">
+                    <div class="victoria-stars">⭐⭐⭐</div>
+                    <h2 class="victoria-titulo">¡VICTORIA!</h2>
+                    <p class="victoria-subtitulo">¡La playa está completamente limpia!</p>
+                    <p class="victoria-desc">Tus 4 robots han alcanzado el nivel máximo.<br>¡Eres el mejor gestor de robots de la costa!</p>
+                    <div class="victoria-robots">🤖🤖🤖🤖</div>
+                    <button id="botonJugarDeNuevo" onclick="location.reload()">🔄 Jugar de nuevo</button>
+                </div>
+            </div>
         </div>
         </div>
     </main>
